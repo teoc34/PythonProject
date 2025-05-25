@@ -9,7 +9,7 @@ import statsmodels.api as sm
 import numpy as np
 
 # Title
-st.title("📚 Poverty's Influence on Education in Romania")
+st.title("Poverty's Influence on Education in Romania")
 st.markdown("Explore how economic and social factors affect education outcomes across Romanian counties.")
 
 # Load main dataset
@@ -30,17 +30,17 @@ internet_df = pd.DataFrame({
 df = pd.merge(df, internet_df, on='County_ID')
 
 # Streamlit display
-st.write("### 🗂️ Dataset Preview")
+st.write("Dataset Preview")
 st.dataframe(df.head())
 
 # Aggregation
-st.write("### 📊 Grouped Stats by Poverty Level")
+st.write("Grouped Stats by Poverty Level")
 df['Poverty_Level'] = pd.qcut(df['Poverty'], 4, labels=['Low', 'Medium', 'High', 'Very High'])
 summary = df.groupby('Poverty_Level')[['Graduates', 'Abdandon_rate']].mean()
 st.dataframe(summary.round(2))
 
 # Matplotlib visualization
-st.write("### 🎓 Graduates vs Poverty")
+st.write("Graduates vs Poverty")
 fig1, ax1 = plt.subplots()
 ax1.scatter(df['Poverty'], df['Graduates'])
 ax1.set_xlabel("Poverty (%)")
@@ -53,7 +53,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df[features_to_scale])
 
 # Clustering
-st.write("### 🤖 Clustering Counties (KMeans)")
+st.write("Clustering Counties (KMeans)")
 kmeans = KMeans(n_clusters=3, random_state=42)
 df['Cluster'] = kmeans.fit_predict(X_scaled)
 fig2, ax2 = plt.subplots()
@@ -63,7 +63,7 @@ ax2.set_ylabel("Abandonment Rate")
 st.pyplot(fig2)
 
 # Logistic Regression
-st.write("### 🔍 Predicting High Abandonment Risk")
+st.write("Predicting High Abandonment Risk")
 df['High_Abandonment'] = (df['Abdandon_rate'] > df['Abdandon_rate'].median()).astype(int)
 X_logreg = df[['Poverty', 'PIB (euro/locuitor)', 'Graduates']]
 y_logreg = df['High_Abandonment']
@@ -74,7 +74,7 @@ logreg.fit(X_logreg_scaled, y_logreg)
 st.write(f"Logistic Regression Accuracy: **{logreg.score(X_logreg_scaled, y_logreg):.2f}**")
 
 # Multiple Regression with statsmodels
-st.write("### 📈 Multiple Regression (statsmodels)")
+st.write("Multiple Regression (statsmodels)")
 X_multi = df[['Poverty', 'Internet_Penetration', 'PIB (euro/locuitor)']]
 X_multi = sm.add_constant(X_multi)
 y_multi = df['Graduates']
