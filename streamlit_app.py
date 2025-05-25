@@ -118,7 +118,17 @@ st.write("### 🗺️ Romania County Map - Poverty Visualization")
 romania_gdf = gpd.read_file("data/romania_Romania_Country_Boundary.zip!/romania_Romania_Country_Boundary.shp")
 romania_gdf['County'] = romania_gdf['NAME'].str.strip().str.lower()
 
-# Merge shapefile with data
+# View column names from the shapefile
+st.write("Shapefile Columns:")
+st.write(romania_gdf.columns)
+
+# Use the correct name column
+romania_gdf['County'] = romania_gdf['judet'].str.strip().str.lower()  # <-- update this based on real name
+
+# Also prepare your main dataset county names
+df['County'] = df['County'].str.strip().str.lower()
+
+# Merge and map
 merged_gdf = romania_gdf.merge(df, on='County')
 
 # Plot
