@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import geopandas as gpd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
@@ -8,8 +7,7 @@ from sklearn.linear_model import LogisticRegression
 import statsmodels.api as sm
 import numpy as np
 
-# Title & Description
-st.title("📚 Poverty's Influence on Education in Romania")
+st.title("Poverty's Influence on Education in Romania")
 st.markdown("""
 Explore how economic and social factors like **poverty**, **GDP**, and **internet access** affect education outcomes
 across Romanian counties. Includes clustering, regression models, and interactive data visualizations.
@@ -33,20 +31,20 @@ internet_df = pd.DataFrame({
 df = pd.merge(df, internet_df, on='County_ID')
 
 # Standardize County Names
-df['County'] = df['County'].str.strip().str.lower()
+df['County'] = df['County'].str.title()
 
 # Preview Dataset
-st.write("### 🗂️ Dataset Preview")
-st.dataframe(df.head())
+st.write("Dataset Preview")
+st.dataframe(df)
 
 # Aggregation by Poverty Levels
-st.write("### 📊 Grouped Education Metrics by Poverty Level")
+st.write("Grouped Education Metrics by Poverty Level")
 df['Poverty_Level'] = pd.qcut(df['Poverty'], 4, labels=['Low', 'Medium', 'High', 'Very High'])
 summary = df.groupby('Poverty_Level')[['Graduates', 'Abdandon_rate']].mean()
 st.dataframe(summary.round(2))
 
 # Scatter Plot (Graduates vs Poverty)
-st.write("### 🎓 Graduates vs Poverty")
+st.write("Graduates vs Poverty")
 fig1, ax1 = plt.subplots()
 ax1.scatter(df['Poverty'], df['Graduates'])
 ax1.set_xlabel("Poverty (%)")
@@ -60,7 +58,7 @@ st.markdown("""
 
 
 # Clustering (KMeans)
-st.write("### 🤖 Clustering Counties")
+st.write("Clustering Counties")
 features = ['Poverty', 'PIB (euro/locuitor)', 'Graduates', 'Abdandon_rate']
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df[features])
@@ -80,7 +78,7 @@ st.markdown("""
 
 
 # Logistic Regression
-st.write("### 📉 Predicting High School Abandonment")
+st.write("Predicting High School Abandonment")
 df['High_Abandonment'] = (df['Abdandon_rate'] > df['Abdandon_rate'].median()).astype(int)
 X_logreg = df[['Poverty', 'PIB (euro/locuitor)', 'Graduates']]
 y_logreg = df['High_Abandonment']
@@ -98,7 +96,7 @@ st.markdown(f"""
 """)
 
 # Multiple Regression (statsmodels)
-st.write("### 📈 Multiple Regression (Graduates ~ Poverty, Internet, PIB)")
+st.write("Multiple Regression (Graduates ~ Poverty, Internet, PIB)")
 X_multi = df[['Poverty', 'Internet_Penetration', 'PIB (euro/locuitor)']]
 X_multi = sm.add_constant(X_multi)
 y_multi = df['Graduates']
