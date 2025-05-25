@@ -110,40 +110,6 @@ st.markdown("""
 - A negative coefficient for poverty suggests that **higher poverty leads to fewer graduates**.
 """)
 
-
-# Geopandas Map (Choropleth)
-st.write("### 🗺️ Romania County Map - Poverty Visualization")
-
-# Load shapefile and match counties
-romania_gdf = gpd.read_file("data/romania_Romania_Country_Boundary.zip!/romania_Romania_Country_Boundary.shp")
-# romania_gdf['County'] = romania_gdf['NAME'].str.strip().str.lower()
-
-# View column names from the shapefile
-st.write("Shapefile Columns:")
-st.write(romania_gdf.columns)
-
-# Use the correct name column
-romania_gdf['County'] = romania_gdf['judet'].str.strip().str.lower()  # <-- update this based on real name
-
-# Also prepare your main dataset county names
-df['County'] = df['County'].str.strip().str.lower()
-
-# Merge and map
-merged_gdf = romania_gdf.merge(df, on='County')
-
-# Plot
-fig_map, ax_map = plt.subplots(figsize=(10, 8))
-merged_gdf.plot(column='Poverty', cmap='OrRd', linewidth=0.8, ax=ax_map, edgecolor='0.8', legend=True)
-ax_map.set_title('Poverty Rate by County in Romania', fontdict={'fontsize': '15'})
-ax_map.axis('off')
-st.pyplot(fig_map)
-st.markdown("""
-- This map shows the **poverty rate by county** using real geographic boundaries.
-- Darker red = **higher poverty**.
-- You can visually identify regions that may need more educational support or funding.
-""")
-
-
 # Footer
 st.markdown("---")
 st.markdown("Made by **Teo** and **Alina** – using data to understand social challenges 📊")
