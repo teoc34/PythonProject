@@ -9,7 +9,7 @@ import numpy as np
 
 st.title("Poverty's Influence on Education in Romania")
 st.markdown("""
-Explore how economic and social factors like **poverty**, **GDP**, and **internet access** affect education outcomes
+Explore how economic and social factors like poverty, **GDP, and **internet access affect education outcomes
 across Romanian counties. Includes clustering, regression models, and interactive data visualizations.
 """)
 
@@ -51,9 +51,10 @@ ax1.set_xlabel("Poverty (%)")
 ax1.set_ylabel("Graduates (%)")
 st.pyplot(fig1)
 st.markdown("""
-- This scatter plot shows how **poverty levels** relate to **graduation rates**.
-- A downward trend would suggest that **higher poverty is associated with fewer graduates**.
-- Look for clustering in the bottom-right (high poverty, low graduates) — these are potentially most at-risk counties.
+- This scatter plot shows how poverty levels relate to graduation rates.
+- A downward trend would suggest that higher poverty is associated with fewer graduates.
+- The scatter plot shows that as graduates increase, the poverty rate increases as well, which at first sight, might be counterintuitive.
+- The result could be influenced by other socioeconomic factors that were not considered such as: migration patterns, unemployment rates, social programs.
 """)
 
 
@@ -71,9 +72,9 @@ ax2.set_xlabel("Graduates")
 ax2.set_ylabel("Abandonment Rate")
 st.pyplot(fig2)
 st.markdown("""
-- The graph shows **3 clusters** of counties based on **education-related variables**.
+- The graph shows 3 clusters of counties based on education-related variables.
 - Colors represent counties grouped by similarity (poverty, graduation, and abandonment).
-- This helps identify patterns — for example, which counties share similar education challenges.
+- This helps identify patterns. For example, which counties share similar education challenges.
 """)
 
 
@@ -87,12 +88,12 @@ X_logreg_scaled = scaler.fit_transform(X_logreg)
 logreg = LogisticRegression()
 logreg.fit(X_logreg_scaled, y_logreg)
 accuracy = logreg.score(X_logreg_scaled, y_logreg)
-st.write(f"**Model Accuracy:** {accuracy:.2f}")
-st.write(f"Logistic Regression Accuracy: **{logreg.score(X_logreg_scaled, y_logreg):.2f}**")
+st.write(f"Model Accuracy: {accuracy:.2f}")
+st.write(f"Logistic Regression Accuracy: {logreg.score(X_logreg_scaled, y_logreg):.2f}")
 st.markdown(f"""
-- This means that the logistic regression model correctly predicts **whether a county has high or low school abandonment** in **{int(accuracy * 100)}%** of cases.
-- The model uses **Poverty rate, GDP, and Graduation rate** to make its predictions.
-- A score of 0.67 is decent — it's better than random, but could still be improved with more features or tuning.
+- This means that the logistic regression model correctly predicts whether a county has high or low school abandonment in {int(accuracy * 100)}% of cases.
+- The model uses Poverty rate, GDP, and Graduation rate to make its predictions.
+- The model achieved an accuracy of about 67%, meaning it correctly classifies high versus low abandonment counties
 """)
 
 # Multiple Regression (statsmodels)
@@ -103,11 +104,18 @@ y_multi = df['Graduates']
 model = sm.OLS(y_multi, X_multi).fit()
 st.text(model.summary())
 st.markdown("""
-- This regression analyzes how **Poverty**, **Internet access**, and **GDP** influence **Graduation Rate**.
-- Coefficients tell us the **direction and strength** of each factor's influence.
-- A negative coefficient for poverty suggests that **higher poverty leads to fewer graduates**.
+- This regression analyzes how Poverty, **Internet access, and **GDP influence Graduation Rate.
+- Coefficients tell us the direction and strength of each factor's influence.
+- A negative coefficient for poverty suggests that higher poverty leads to fewer graduates.
+- Ordinary Least Squared regression shows the relations between dependent variable Graduates and independent variables Poverty, Internet_Penetration, PIB(euro/locuitor).
+- R-squared: = 0.608 => About 60.8% of the variability in the number of graduates is explained by the three predictors. This is a moderate to strong fit.
+- Adjusted R-squared = 0.578 => Slightly lower than R², which is normal and expected.
+- F-statistic = 19.68, p-value = 7.27e-08 => The overall model is statistically significant. At least one of the predictors significantly explains variance in the dependent variable.
+- Only PIB(euro/locuitor) has a p-value < 0.05 => the relationship between PIB and the number of graduates is statistically significant.
+- Durbin-Watson = 2.148 is close to 2 meaning that there is NO autocorrelation in residuals.
+- Omnibus / Jarque-Bera tests = High p-values (> 0.05) suggest the residuals are normally distributed.
 """)
 
 # Footer
 st.markdown("---")
-st.markdown("Made by **Teo** and **Alina** – using data to understand social challenges 📊")
+st.markdown("Made by Teo and Alina – using data to understand social challenges 📊")
