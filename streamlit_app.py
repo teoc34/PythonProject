@@ -81,15 +81,5 @@ y_multi = df['Graduates']
 model = sm.OLS(y_multi, X_multi).fit()
 st.text(model.summary())
 
-# Geopandas map
-st.write("### 🗺️ Counties Map with Clusters (Geopandas)")
-romania_gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
-romania_gdf = romania_gdf[romania_gdf['name'] == 'Romania']
-romania_gdf['Cluster'] = 0  # dummy merge to show geopandas use
-fig3, ax3 = plt.subplots()
-romania_gdf.plot(ax=ax3, color='lightblue', edgecolor='black')
-ax3.set_title("Romania Map Example (Geopandas)")
-st.pyplot(fig3)
-
 st.markdown("---")
 st.markdown("Made by **Teo** and **Alina** – using data to understand social challenges 📊")
