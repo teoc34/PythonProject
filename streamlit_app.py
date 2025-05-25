@@ -116,7 +116,7 @@ st.write("### 🗺️ Romania County Map - Poverty Visualization")
 
 # Load shapefile and match counties
 romania_gdf = gpd.read_file("data/romania_Romania_Country_Boundary.zip!/romania_Romania_Country_Boundary.shp")
-romania_gdf['County'] = romania_gdf['NAME'].str.strip().str.lower()
+# romania_gdf['County'] = romania_gdf['NAME'].str.strip().str.lower()
 
 # View column names from the shapefile
 st.write("Shapefile Columns:")
