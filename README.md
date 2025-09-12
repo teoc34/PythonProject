@@ -4,6 +4,8 @@ A data-driven interactive dashboard built with **Streamlit** that explores the i
 
 This project includes **data preprocessing**, **clustering (K-Means)**, **logistic regression**, **multiple linear regression**, and **visual insights**, all within a single interactive web app.
 
+You can access the project here : https://pythonproject-supplyear.streamlit.app/
+
 ---
 
 ## 🧪 Technologies & Libraries Used
